@@ -1,5 +1,5 @@
 import "./deps.ts";
-import { Bot } from "./deps.ts";
+import { Bot, Context, hydrateReply, ParseModeFlavor } from "./deps.ts";
 import { startHandler } from "./handler/private.ts";
 
 const BOT_TOKEN = Deno.env.get("BOT_TOKEN");
@@ -8,7 +8,9 @@ if (!BOT_TOKEN) {
 	Deno.exit(1);
 }
 
-const bot = new Bot(BOT_TOKEN);
+export type BotContext = ParseModeFlavor<Context>;
+const bot = new Bot<BotContext>(BOT_TOKEN);
+bot.use(hydrateReply);
 
 bot.command("start", startHandler);
 
