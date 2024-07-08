@@ -1,7 +1,7 @@
 import { connectDB } from "./db.ts";
 import "./deps.ts";
 import { Application, Router } from "./deps.ts";
-import userRouter from "./handler/user.ts";
+import { authRouter, userRouter } from "./handler/index.ts";
 
 const MONGO_URI = Deno.env.get("MONGO_URI") ??
 	"mongodb://localhost:27017/expen";
@@ -14,6 +14,7 @@ router.get("/ping", (ctx) => {
 	ctx.response.body = { status: "🎊 up and running!" };
 });
 router.use("/user", userRouter.routes());
+router.use("/auth", authRouter.routes());
 app.use(router.routes());
 app.use(router.allowedMethods());
 

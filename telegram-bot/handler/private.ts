@@ -13,7 +13,7 @@ export async function startHandler(ctx: BotContext) {
 	const response = await fetch(config.SERVER_URL + "/user/register", {
 		method: "POST",
 		body: JSON.stringify({
-			userid: id,
+			tg_userid: id,
 			first_name,
 			username,
 		}),
