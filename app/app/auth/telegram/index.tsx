@@ -1,6 +1,8 @@
 import { ENDPOINTS, LINKS } from "@/constants";
 import { STRINGS } from "@/constants/strings";
+import { useSession } from "@/context/Authentication";
 import { ToastViewport, useToastController } from "@tamagui/toast";
+import { router } from "expo-router";
 import { useState } from "react";
 import { Linking } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -13,10 +15,12 @@ export default function TelegramAuth() {
   const [isActive, setIsActive] = useState<boolean>(true);
   const toast = useToastController();
 
+  const { saveToken } = useSession();
+
   async function handleContinue() {
     setIsActive(false);
     if (!code) {
-      setError("Please enter a valid code");
+      setError(STRINGS.errors.enter_valid_code);
     }
 
     try {
@@ -39,8 +43,14 @@ export default function TelegramAuth() {
           message: string;
         } = await response.json();
 
-        // TODO: save the token to the local storage
-        console.log(data.appToken);
+        try {
+          await saveToken(data.appToken);
+          router.replace("(tabs)");
+        } catch (e) {
+          toast.show(STRINGS.errors.something_went_wrong, {
+            message: STRINGS.errors.try_later,
+          });
+        }
       } else if (response.status === 404) {
         toast.show(STRINGS.errors.user_not_found, {
           message: STRINGS.errors.try_diff_code,
@@ -93,7 +103,7 @@ export default function TelegramAuth() {
               setCode(code);
               setError(undefined);
             }}
-            placeholder="Paste the code here"
+            placeholder={STRINGS.placeholders.paste_code_here}
           />
           {error && <Text color="$red9">{error}</Text>}
         </View>

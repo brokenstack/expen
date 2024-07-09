@@ -10,6 +10,9 @@
     "ios": {
       "supportsTablet": true
     },
+    "splash": {
+      "backgroundColor": "black"
+    },
     "android": {
       "package": "pw.alk.expen",
       "adaptiveIcon": {
@@ -22,10 +25,7 @@
       "output": "static",
       "favicon": "./assets/images/favicon.png"
     },
-    "plugins": [
-      "expo-router",
-      "expo-font"
-    ],
+    "plugins": ["expo-router", "expo-font", "expo-secure-store"],
     "experiments": {
       "typedRoutes": true
     },

@@ -1,57 +1,36 @@
-import { tamaguiConfig } from "../tamagui.config";
-import {
-  DarkTheme,
-  DefaultTheme,
-  ThemeProvider,
-} from "@react-navigation/native";
 import { useFonts } from "expo-font";
-import { Stack } from "expo-router";
 import "react-native-reanimated";
 
-import { useColorScheme } from "@/hooks/useColorScheme";
-import { TamaguiProvider } from "tamagui";
-import React, { useEffect } from "react";
-import { ToastProvider, ToastViewport } from "@tamagui/toast";
+import React, { useCallback, useEffect, useState } from "react";
+import * as SplashScreen from "expo-splash-screen";
+import { Providers } from "@/components/providers";
+import { Slot, Stack } from "expo-router";
+import { SafeAreaView } from "react-native-safe-area-context";
+
+SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
-
-  const [loaded] = useFonts({
+  const [loaded, error] = useFonts({
     Inter: require("@tamagui/font-inter/otf/Inter-Medium.otf"),
     InterBold: require("@tamagui/font-inter/otf/Inter-Bold.otf"),
   });
+  useEffect(() => {
+    if (error) throw error;
+  }, [error]);
 
   useEffect(() => {
     if (loaded) {
-      // can hide splash screen here
+      SplashScreen.hideAsync();
     }
   }, [loaded]);
 
-  if (!loaded) {
+  if (!loaded && !error) {
     return null;
   }
 
   return (
-    <TamaguiProvider config={tamaguiConfig} defaultTheme={colorScheme!}>
-      <ToastProvider>
-        <ThemeProvider
-          value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
-        >
-          <Stack
-            screenOptions={{
-              headerShown: false,
-            }}
-          >
-            <Stack.Screen name="index" options={{ headerShown: false }} />
-            <Stack.Screen
-              name="auth/telegram/index"
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-            <Stack.Screen name="+not-found" />
-          </Stack>
-        </ThemeProvider>
-      </ToastProvider>
-    </TamaguiProvider>
+    <Providers>
+      <Slot />
+    </Providers>
   );
 }

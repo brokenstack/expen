@@ -15,5 +15,9 @@ export const STRINGS = {
     user_not_found: "User not found",
     try_diff_code:
       "Please try a valid code retrieved from the bot or try again later",
+    enter_valid_code: "Please enter a valid code",
+  },
+  placeholders: {
+    paste_code_here: "Paste the code here",
   },
 };
