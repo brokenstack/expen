@@ -4,10 +4,9 @@ import React from "react";
 import { TabBarIcon } from "@/components/navigation/TabBarIcon";
 import { Colors } from "@/constants/Colors";
 import { useColorScheme } from "@/hooks/useColorScheme";
-import { Providers } from "@/components/providers";
 import { useSession } from "@/context/Authentication";
 import AuthCheck from "@/components/AuthCheck";
-import { Text, View } from "tamagui";
+import { View } from "tamagui";
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
@@ -22,7 +21,7 @@ export default function TabLayout() {
   }
 
   return (
-    <View width={"100%"} height={"100%"} bg={"black"} p={10}>
+    <View height={"100%"} bg={"black"} p={10}>
       <Tabs
         screenOptions={{
           tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
